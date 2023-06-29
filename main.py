@@ -13,10 +13,10 @@ class App(customtkinter.CTk):
         
         self.toplevel_window = None
 
-        self.title("CUF - Create User Folder")
+        self.title("CUF")
         self.geometry("620x450")
         self.resizable(False, False)
-        self.iconbitmap("images/icon/icon.ico")
+        self.iconbitmap("images/icon/icon2.ico")
         
         
 
@@ -54,10 +54,14 @@ class App(customtkinter.CTk):
                                                       fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
                                                       image=self.info_image, anchor="w", command=self.frame_2_button_event)
         self.frame_2_button.grid(row=2, column=0, sticky="ew")
-
+        
+        self.appearance_mode_label = customtkinter.CTkLabel(self.navigation_frame, text="Appearance Mode:", anchor="w")
+        self.appearance_mode_label.grid(row=5, column=0, padx=20, sticky="s")
         self.appearance_mode_menu = customtkinter.CTkOptionMenu(self.navigation_frame, values=["System", "Dark", "Light"],
                                                                 command=self.change_appearance_mode_event)
-        self.appearance_mode_menu.grid(row=6, column=0, padx=20, pady=20, sticky="s")
+        self.appearance_mode_menu.grid(row=6, column=0, padx=20, pady=10, sticky="s")
+        
+
 
         # create home frame
         self.home_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
@@ -66,7 +70,7 @@ class App(customtkinter.CTk):
         self.banner_text = customtkinter.CTkLabel(self.home_frame, text="CUF - Create User Folder",
                                                   font=customtkinter.CTkFont(size=18, weight="bold"))
         self.banner_text.grid(row=0, column=0, padx=20, pady=0, sticky="nsew", ipady=10)
-        self.description_text = customtkinter.CTkLabel(self.home_frame, text="A tool for creating a user's domain account entry on a computer",
+        self.description_text = customtkinter.CTkLabel(self.home_frame, text="Simple tool for creating user domain account entry on a computer",
                                                   font=customtkinter.CTkFont(size=14))
         self.description_text.grid(row=1, column=0, padx=20, sticky="n")
 
@@ -78,10 +82,17 @@ class App(customtkinter.CTk):
         self.password_entry.grid(row=3, column=0, padx=30, pady=(0, 15), ipady=5)
         
         self.home_frame_button_2 = customtkinter.CTkButton(self.home_frame, text="Confirm", command=self.open_toplevel)
-        self.home_frame_button_2.grid(row=4, column=0, padx=20, pady=10, ipady=5, ipadx=5)
+        self.home_frame_button_2.grid(row=4, column=0, padx=20, pady=10, ipadx=5, ipady=5)
 
         # create second frame
-        self.second_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
+        self.help_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
+        
+        self.banner_text2 = customtkinter.CTkLabel(self.help_frame, text="Frequently asked questions",
+                                                  font=customtkinter.CTkFont(size=18, weight="bold"))
+        self.banner_text2.grid(row=0, column=0, padx=20, pady=0, sticky="nsew", ipady=10)
+        self.description_text2 = customtkinter.CTkLabel(self.help_frame, text="Find answers to commonsly asked questions about this program",
+                                                  font=customtkinter.CTkFont(size=14))
+        self.description_text2.grid(row=1, column=0, padx=20, sticky="n")
 
         # select default frame
         self.select_frame_by_name("home")
@@ -97,9 +108,9 @@ class App(customtkinter.CTk):
         else:
             self.home_frame.grid_forget()
         if name == "frame_2":
-            self.second_frame.grid(row=0, column=1, sticky="nsew")
+            self.help_frame.grid(row=0, column=1, sticky="nsew")
         else:
-            self.second_frame.grid_forget()
+            self.help_frame.grid_forget()
 
     def home_button_event(self):
         self.select_frame_by_name("home")
