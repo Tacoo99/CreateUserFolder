@@ -1,2 +1,0 @@
-# CreateUserFolder
-CreateUserFolder - CUF
