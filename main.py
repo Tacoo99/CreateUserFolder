@@ -18,7 +18,6 @@ class App(customtkinter.CTk):
         self.resizable(False, False)
         self.iconbitmap("images/icon/icon2.ico")
         
-        
 
         # set grid layout 1x2
         self.grid_rowconfigure(0, weight=1)
