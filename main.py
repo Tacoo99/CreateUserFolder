@@ -31,10 +31,12 @@ class App(customtkinter.CTk):
         self.info_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "info_dark.png")),
                                                      dark_image=Image.open(os.path.join(image_path, "info_light.png")), size=(25, 25))
         
-        # self.eyeClosed = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "eyeClosed_dark.png")),
-        #                                              dark_image=Image.open(os.path.join(image_path, "eyeClosed_light.png")), size=(25, 25))
-        # self.eyeOpen = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "eyeOpen_dark.png")),
-        #                                              dark_image=Image.open(os.path.join(image_path, "eyeOpen_dark.png")), size=(25, 25))
+        self.first = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "first_dark.png")),
+                                                     dark_image=Image.open(os.path.join(image_path, "first_light.png")), size=(25, 25))
+        self.second = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "second_dark.png")),
+                                                     dark_image=Image.open(os.path.join(image_path, "second_dark.png")), size=(25, 25))
+        self.third = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "third_dark.png")),
+                                                     dark_image=Image.open(os.path.join(image_path, "third_dark.png")), size=(25, 25))
 
         # create navigation frame
         self.navigation_frame = customtkinter.CTkFrame(self, corner_radius=0)
