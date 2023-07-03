@@ -16,7 +16,7 @@ class App(customtkinter.CTk):
         self.title("CUF")
         self.geometry("620x450")
         self.resizable(False, False)
-        self.iconbitmap("images/icon/icon2.ico")
+        self.iconbitmap("images/icon/icon.ico")
         
 
         # set grid layout 1x2
@@ -31,12 +31,12 @@ class App(customtkinter.CTk):
         self.info_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "info_dark.png")),
                                                      dark_image=Image.open(os.path.join(image_path, "info_light.png")), size=(25, 25))
         
-        self.first = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "first_dark.png")),
+        self.first_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "first_dark.png")),
                                                      dark_image=Image.open(os.path.join(image_path, "first_light.png")), size=(25, 25))
-        self.second = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "second_dark.png")),
-                                                     dark_image=Image.open(os.path.join(image_path, "second_dark.png")), size=(25, 25))
-        self.third = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "third_dark.png")),
-                                                     dark_image=Image.open(os.path.join(image_path, "third_dark.png")), size=(25, 25))
+        self.second_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "second_dark.png")),
+                                                     dark_image=Image.open(os.path.join(image_path, "second_light.png")), size=(25, 25))
+        self.third_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "third_dark.png")),
+                                                     dark_image=Image.open(os.path.join(image_path, "third_light.png")), size=(25, 25))
 
         # create navigation frame
         self.navigation_frame = customtkinter.CTkFrame(self, corner_radius=0)
@@ -94,6 +94,32 @@ class App(customtkinter.CTk):
         self.description_text2 = customtkinter.CTkLabel(self.help_frame, text="Find answers to commonsly asked questions about this program",
                                                   font=customtkinter.CTkFont(size=14))
         self.description_text2.grid(row=1, column=0, padx=20, sticky="n")
+        
+        #first question
+        self.first_title = customtkinter.CTkLabel(self.help_frame, text="What is this program for?", image=self.first_image, compound="left")
+        self.first_title.grid(row=2, column=0, ipadx=50, pady=25, sticky="wn")
+        
+        self.first_description = customtkinter.CTkLabel(self.help_frame, text="It allows you to log in to your domain account \nwhen you receive new computer")
+        self.first_description.grid(row=3, column=0, sticky="n")
+        
+        #second question
+        self.second_title = customtkinter.CTkLabel(self.help_frame, text="Who to contact in case of problem?", image=self.second_image, compound="left")
+        self.second_title.grid(row=4, column=0, ipadx=50, pady=25, sticky="wn")
+        
+        self.second_description = customtkinter.CTkLabel(self.help_frame, text="E-mail: wojciech.koziol@fujitsu.com\nE-mail: servicedesk@mpl.mee.com\nTelephone: +48 22 104 32 61")
+        self.second_description.grid(row=5, column=0, sticky="n")
+        
+        #third question
+        self.third_title = customtkinter.CTkLabel(self.help_frame, text="Who is the author of the program?", image=self.third_image, compound="left")
+        self.third_title.grid(row=6, column=0, ipadx=50, pady=25, sticky="wn")
+        
+        self.third_description = customtkinter.CTkLabel(self.help_frame, text="Wojciech Kozioł, Fujitsu")
+        self.third_description.grid(row=7, column=0, sticky="n")
+        
+        self.third_description = customtkinter.CTkLabel(self.help_frame, text="CUF ©2023 Fujitsu. All Rights Reserved",
+                                                        font=customtkinter.CTkFont(size=9))
+        self.third_description.grid(row=8, column=0, pady=15,padx=5, sticky="se")
+        
 
         # select default frame
         self.select_frame_by_name("home")
