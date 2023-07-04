@@ -1,8 +1,12 @@
+import sys
+import tkinter
 import customtkinter
 import os
 from PIL import Image
 
 import win32security
+
+import subprocess
 
 
 from ModalWindow import ModalWindow
@@ -18,25 +22,31 @@ class App(customtkinter.CTk):
         self.resizable(False, False)
         self.iconbitmap("images/icon/icon.ico")
         
+        self.update_idletasks()
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+        x = (screen_width - self.winfo_width()) // 2
+        y = (screen_height - self.winfo_height()) // 2
+        self.geometry(f"+{x}+{y}")
+        
 
         # set grid layout 1x2
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
         # load images with light and dark mode image
-        image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "images")
-        self.logo_image = customtkinter.CTkImage(Image.open(os.path.join(image_path, "banner-logo.png")), size=(110, 51))
-        self.add_user_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "add_user_dark.png")),
-                                                     dark_image=Image.open(os.path.join(image_path, "add_user_light.png")), size=(25, 25))
-        self.info_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "info_dark.png")),
-                                                     dark_image=Image.open(os.path.join(image_path, "info_light.png")), size=(25, 25))
+        self.logo_image = customtkinter.CTkImage(Image.open("images/banner-logo.png"), size=(110, 51))
+        self.add_user_image = customtkinter.CTkImage(light_image=Image.open("images/add_user_dark.png"),
+                                                     dark_image=Image.open("images/add_user_light.png"), size=(25, 25))
+        self.info_image = customtkinter.CTkImage(light_image=Image.open("images/info_dark.png"),
+                                                     dark_image=Image.open("images/info_light.png"), size=(25, 25))
         
-        self.first_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "first_dark.png")),
-                                                     dark_image=Image.open(os.path.join(image_path, "first_light.png")), size=(25, 25))
-        self.second_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "second_dark.png")),
-                                                     dark_image=Image.open(os.path.join(image_path, "second_light.png")), size=(25, 25))
-        self.third_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "third_dark.png")),
-                                                     dark_image=Image.open(os.path.join(image_path, "third_light.png")), size=(25, 25))
+        self.first_image = customtkinter.CTkImage(light_image=Image.open("images/first_dark.png"),
+                                                     dark_image=Image.open("images/first_light.png"), size=(25, 25))
+        self.second_image = customtkinter.CTkImage(light_image=Image.open("images/second_dark.png"),
+                                                     dark_image=Image.open("images/second_light.png"), size=(25, 25))
+        self.third_image = customtkinter.CTkImage(light_image=Image.open("images/third_dark.png"),
+                                                     dark_image=Image.open("images/third_light.png"), size=(25, 25))
 
         # create navigation frame
         self.navigation_frame = customtkinter.CTkFrame(self, corner_radius=0)
@@ -155,25 +165,28 @@ class App(customtkinter.CTk):
         username = self.username_entry.get()
         password = self.password_entry.get()
         
+        full_username = f"{domain}\\{username}"
+        
         if self.username_entry.get() != '':
-            token = win32security.LogonUser(
-            username,
-            domain,
-            password,
-            win32security.LOGON32_LOGON_INTERACTIVE,
-            win32security.LOGON32_PROVIDER_DEFAULT)
             
-            # if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
+            ps_command = "& {{Start-Process notepad.exe -Credential (New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ('{}', (ConvertTo-SecureString -String '{}'-AsPlainText -Force)))}}"
+            command = ['powershell.exe', '-WindowStyle', 'Hidden', '-command', ps_command.format(full_username, password)]
+            
+            try:
+                subprocess.check_output(command)
+                
+                # if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
             #     self.toplevel_window = ModalWindow(self)  # create window if its None or destroyed
             # else:
             #     self.toplevel_window.focus()  # if window exists focus it
-            
-            if token:
-                print("Uwierzytelnianie powiodło się. Użytkownik jest autoryzowany.")
-            else:
-                print("Uwierzytelnianie nie powiodło się. Użytkownik nie jest autoryzowany.")
+                
+            except subprocess.CalledProcessError as e:
+                tkinter.messagebox.showerror(title='Błąd', message='Uwierzytelnianie nie powiodło się. Konto nie zostało utworzone!')
         else:
-            print('brak danych')
+            tkinter.messagebox.showerror(title='Błąd', message='Brak wymaganych danych!')
+            
+            
+            
 
 if __name__ == "__main__":
     app = App()
