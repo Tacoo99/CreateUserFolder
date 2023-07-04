@@ -175,10 +175,6 @@ class App(customtkinter.CTk):
             try:
                 subprocess.check_output(command)
                 
-                # if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
-            #     self.toplevel_window = ModalWindow(self)  # create window if its None or destroyed
-            # else:
-            #     self.toplevel_window.focus()  # if window exists focus it
                 
             except subprocess.CalledProcessError as e:
                 tkinter.messagebox.showerror(title='Błąd', message='Uwierzytelnianie nie powiodło się. Konto nie zostało utworzone!')

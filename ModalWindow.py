@@ -28,10 +28,8 @@ class ModalWindow(customtkinter.CTkToplevel):
         self.focus_force()
         
         image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "images")
-        self.logout_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "logout_dark.png")),
-                                                 dark_image=Image.open(os.path.join(image_path, "logout_light.png")), size=(20, 20))
-        self.close_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "close_dark.png")),
-                                                 dark_image=Image.open(os.path.join(image_path, "close_light.png")), size=(20, 20))
+        self.logout_image = customtkinter.CTkImage(Image.open(os.path.join(image_path, "logout_light.png")), size=(20, 20))
+        self.close_image = customtkinter.CTkImage(Image.open(os.path.join(image_path, "close_light.png")), size=(20, 20))
 
 
         self.home_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
