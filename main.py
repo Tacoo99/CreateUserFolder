@@ -156,7 +156,7 @@ class App(customtkinter.CTk):
         
             
     def open_toplevel(self):
-        domain = "mpl.mee.com"
+        domain = "example-domain"
         username = self.username_entry.get()
         password = self.password_entry.get()
 
