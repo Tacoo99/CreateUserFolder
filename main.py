@@ -1,12 +1,8 @@
-import sys
+import subprocess
 import tkinter
 import customtkinter
 import os
 from PIL import Image
-
-import win32security
-
-import subprocess
 
 
 from ModalWindow import ModalWindow
@@ -116,7 +112,7 @@ class App(customtkinter.CTk):
         self.second_title = customtkinter.CTkLabel(self.help_frame, text="Who to contact in case of problem?", image=self.second_image, compound="left")
         self.second_title.grid(row=4, column=0, ipadx=50, pady=25, sticky="wn")
         
-        self.second_description = customtkinter.CTkLabel(self.help_frame, text="E-mail: wojciech.koziol@fujitsu.com\nE-mail: servicedesk@mpl.mee.com\nTelephone: +48 22 104 32 61")
+        self.second_description = customtkinter.CTkLabel(self.help_frame, text="E-mail: servicedesk@mpl.mee.com\nTelephone: +48 22 104 32 61")
         self.second_description.grid(row=5, column=0, sticky="n")
         
         #third question
@@ -128,7 +124,7 @@ class App(customtkinter.CTk):
         
         self.third_description = customtkinter.CTkLabel(self.help_frame, text="CUF ©2023 Fujitsu. All Rights Reserved",
                                                         font=customtkinter.CTkFont(size=9))
-        self.third_description.grid(row=8, column=0, pady=15,padx=5, sticky="se")
+        self.third_description.grid(row=8, column=0, pady=30, padx=5, sticky="se")
         
 
         # select default frame
@@ -160,32 +156,36 @@ class App(customtkinter.CTk):
         
             
     def open_toplevel(self):
-        
         domain = "mpl.mee.com"
         username = self.username_entry.get()
         password = self.password_entry.get()
-        
-        full_username = f"{domain}\\{username}"
-        
-        if self.username_entry.get() != '':
-            
-            ps_command = "& {{Start-Process notepad.exe -Credential (New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ('{}', (ConvertTo-SecureString -String '{}'-AsPlainText -Force)))}}"
-            command = ['powershell.exe', '-WindowStyle', 'Hidden', '-command', ps_command.format(full_username, password)]
-            
-            try:
-                subprocess.check_output(command)
+
+        if username != '' and password != '':
+            user_directory = os.path.join("C:/Users", username)
+            if os.path.exists(user_directory):
                 
-                if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
-                    self.toplevel_window = ModalWindow(self)  # create window if its None or destroyed
+                tkinter.messagebox.showerror(title='Error', message='User account already exists, log out and log in with your account')
+            else:
+                try:
+                    command = 'notepad.exe'
+                    arguments = '-WindowStyle Hidden'
+                    full_command = f'runas /savecred /user:{domain}\\{username} "powershell.exe -Command \\"Start-Process -FilePath \\"{command}\\" -ArgumentList \\"{arguments}\\" -WindowStyle Hidden\\""'
+                    subprocess.run(full_command, shell=True)
+                    
+                except Exception as e:
+                        tkinter.messagebox.showerror(title='Error', message='There is a problem with the program, please contact Servicedesk')
+                        
+                if os.path.exists(user_directory):
+                        #success message
+                    if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
+                            self.toplevel_window = ModalWindow(self)  # create window if its None or destroyed
+                    else:
+                        self.toplevel_window.focus()  # if window exists focus it
+                        
                 else:
-                    self.toplevel_window.focus()  # if window exists focus it
-                
-                
-            except subprocess.CalledProcessError as e:
-                tkinter.messagebox.showerror(title='Błąd', message='Uwierzytelnianie nie powiodło się. Konto nie zostało utworzone!')
+                    tkinter.messagebox.showerror(title='Error', message='Error while creating account')
         else:
-            tkinter.messagebox.showerror(title='Błąd', message='Brak wymaganych danych!')
-            
+            tkinter.messagebox.showerror(title='Error', message='Please fill all fields!')
             
             
 
